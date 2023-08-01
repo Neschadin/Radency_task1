@@ -1,0 +1,53 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "shop",
+      "createdAt": "2023-07-31T08:30:00",
+      "content": "Buy groceries for the week.",
+      "category": "Task"
+    },
+    {
+      "id": 2,
+      "name": "To visit the park",
+      "createdAt": "2023-07-30T14:15:00",
+      "content": "To visit the new park. It's beautiful.",
+      "category": "Random Thought"
+    },
+    {
+      "id": 3,
+      "name": "Project",
+      "createdAt": "2023-07-29T09:45:00",
+      "content": "Idea for a new app project.",
+      "category": "Idea"
+    },
+    {
+      "id": 4,
+      "name": "Good thought",
+      "createdAt": "2023-07-30T14:15:00",
+      "content": "Visited the new park. It's beautiful.",
+      "category": "Random Thought"
+    },
+    {
+      "id": 5,
+      "name": "visit dentist",
+      "createdAt": "2023-07-15T14:15:00",
+      "content": "I’m gonna have a dentist appointment on the 3/5/2021, I moved it from 5/5/21.",
+      "category": "Random Thought"
+    },
+    {
+      "id": 6,
+      "name": "Test",
+      "createdAt": "2023-07-06T14:15:00",
+      "content": "Visited the new park. It's beautiful.",
+      "category": "Random Thought"
+    },
+    {
+      "id": 7,
+      "name": "Test",
+      "createdAt": "2023-07-17T14:15:00",
+      "content": "Visited the new park. It's beautiful.",
+      "category": "Random Thought"
+    }
+  ]
+}
