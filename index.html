@@ -1,16 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/style.css" rel="stylesheet">
-    <title>Task 1</title>
+    <link href="/output.css" rel="stylesheet" />
+    <title>Radency task 1</title>
   </head>
 
   <body>
-    <div className="h-10 w-10 border border-red-600">fff</div>
-    <div id="app">
-    </div>
-    <script type="module" src="/main.js"></script>
+    <main id="app">
+      <div class="hidden">
+        <h1>Task Form</h1>
+        <div id="form-container" class="border border-red-500">
+          <form id="note-form">
+            <label for="note-content">Note Content:</label>
+            <input type="text" id="note-content" required />
+            <label for="note-category">Category:</label>
+            <select id="note-category" required>
+              <option value="Task">Task</option>
+              <option value="Random Thought">Random Thought</option>
+              <option value="Idea">Idea</option>
+            </select>
+            <button type="submit">Add Note</button>
+          </form>
+        </div>
+      </div>
+
+      <div>
+        <div id="notes-table-container">
+          <table class="mb-10 text-left">
+            <tr class="bg-gray-400">
+              <th>Name</th>
+              <th>Created</th>
+              <th>Category</th>
+              <th>Content</th>
+              <th>Dates</th>
+              <th></th>
+              <th>Archive</th>
+              <th>Delete</th>
+            </tr>
+
+            <tr>
+              <td>1</td>
+              <td>2023-07-31T08:30:00</td>
+              <td>Task</td>
+              <td>Buy groceries for the week.</td>
+              <td>3/5/2021, 5/5/2021</td>
+              <td>
+                <button><img src="/edit.svg" alt="edit" /></button>
+              </td>
+              <td>
+                <button><img src="/archive.svg" alt="archive" /></button>
+              </td>
+              <td>
+                <button><img src="/delete.svg" alt="delete" /></button>
+              </td>
+            </tr>
+
+            <tr>
+              <td>2</td>
+              <td>2023-07-30T14:15:00</td>
+              <td>Random Thought</td>
+              <td>Visited the new park. It's beautiful.</td>
+              <td>None</td>
+              <td>
+                <button><img src="/edit.svg" alt="edit" /></button>
+              </td>
+              <td>
+                <button><img src="/archive.svg" alt="archive" /></button>
+              </td>
+              <td>
+                <button><img src="/delete.svg" alt="delete" /></button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <div id="summary-table-container">
+          <table>
+            <tr>
+              <th>Name Category</th>
+              <th>Active</th>
+              <th>Archived</th>
+            </tr>
+
+            <tr>
+              <td>Task</td>
+              <td>2</td>
+              <td>1</td>
+            </tr>
+
+            <tr>
+              <td>Random Thought</td>
+              <td>1</td>
+              <td>1</td>
+            </tr>
+
+            <tr>
+              <td>Idea</td>
+              <td>1</td>
+              <td>0</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <script type="module" src="./src/js/data.js"></script>
+      <script type="module" src="./src/js/render.js"></script>
+      <script type="module" src="./src/js/events.js"></script>
+      <script type="module" src="./src/js/utils.js"></script>
+      <script type="module" src="./src/js/main.js"></script>
+    </main>
   </body>
 </html>

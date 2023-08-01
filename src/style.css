@@ -8,8 +8,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #eeeeee;
+  background-color: #555555;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -21,25 +21,27 @@
 body {
   margin: 0;
   display: flex;
+  flex-direction: column;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
-#app {
-  max-width: 1280px;
+
+main {
+  width: 100%;
+  max-width: 1366px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
 
-  button {
-    background-color: #f9f9f9;
-  }
+th, td {
+  @apply p-3;
+  border: 1px solid black;
 }

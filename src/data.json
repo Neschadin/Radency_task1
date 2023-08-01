@@ -1,0 +1,46 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "createdAt": "2023-07-31T08:30:00",
+      "content": "Buy groceries for the week.",
+      "category": "Task"
+    },
+    {
+      "id": 2,
+      "createdAt": "2023-07-30T14:15:00",
+      "content": "Visited the new park. It's beautiful.",
+      "category": "Random Thought"
+    },
+    {
+      "id": 3,
+      "createdAt": "2023-07-29T09:45:00",
+      "content": "Idea for a new app project.",
+      "category": "Idea"
+    },
+    {
+      "id": 4,
+      "createdAt": "2023-07-30T14:15:00",
+      "content": "Visited the new park. It's beautiful.",
+      "category": "Random Thought"
+    },
+    {
+      "id": 5,
+      "createdAt": "2023-07-15T14:15:00",
+      "content": "Visited the new park. It's beautiful.",
+      "category": "Random Thought"
+    },
+    {
+      "id": 6,
+      "createdAt": "2023-07-06T14:15:00",
+      "content": "Visited the new park. It's beautiful.",
+      "category": "Idea"
+    },
+    {
+      "id": 7,
+      "createdAt": "2023-07-17T14:15:00",
+      "content": "Visited the new park. It's beautiful.",
+      "category": "Random Thought"
+    }
+  ]
+}
