@@ -4,10 +4,7 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
-  color-scheme: light dark;
   color: #eeeeee;
   background-color: #555555;
 
@@ -27,21 +24,23 @@ body {
   min-height: 100vh;
 }
 
-
-main {
-  width: 100%;
-  max-width: 1366px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
+/* button {
+  @apply h-6 w-6;
+} */
 
 table {
-  border-collapse: collapse;
-  width: 100%;
+  /* border-collapse:separate; */
+  @apply w-full;
 }
 
-th, td {
+th,
+td {
   @apply p-3;
-  border: 1px solid black;
+  border: 1px solid gray;
 }
+
+/* @layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+} */
