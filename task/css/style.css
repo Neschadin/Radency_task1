@@ -1,0 +1,105 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  min-height: 100vh;
+  max-width: 600px;
+  min-width: 200px;
+  font-family: 'Trebuchet MS';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  color: #faebd7;
+  background-color: #202020;
+}
+
+nav {
+  margin-top: 20px;
+  min-height: 80px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.menu-button {
+  height: 30px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: #faebd7;
+}
+
+.menu-button:active {
+  background-color: rgb(185, 173, 158);
+}
+
+img {
+  width: 20px;
+  height: 20px;
+}
+
+#input-add {
+  margin-top: 25px;
+  width: 95%;
+  height: 35px;
+  font-size: 16px;
+  color: #faebd7;
+  background: rgba(196, 196, 196, 0.29);
+  border: 1px solid #faebd78e;
+  padding: 0 15px;
+  border-radius: 4px
+}
+
+ul {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 32px;
+  list-style: none;
+}
+
+li {
+  transition: background-color 0.5s;
+  padding: 5px;
+  border: 2px dashed #b2d9d0;
+  border-radius: 10px;
+  cursor: row-resize;
+}
+
+.js-task-content {
+  cursor: text;
+}
+
+.js-cross-text {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.js-delete {
+  cursor: auto;
+}
+
+.js-task-time {
+  font-size: 12px;
+}
+
+.js-selected {
+  opacity: 0.5;
+}
+
+.js-border{
+  border-color: rgb(235, 20, 65);
+}
