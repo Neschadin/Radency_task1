@@ -1,21 +1,15 @@
-import { buildTasksList } from "./render";
+import { renderArchiveTable, renderTasksTable } from './render';
 import { data } from '../data.json';
-import { openModalForAdd } from "./modal";
+import { openModalForAdd } from './modal';
 
 const categories = ['Task', 'Random Thought', 'Idea'];
 
-
-
-
-
-
 const notesTableContainer = document.getElementById('notes-table-container');
-const summaryTableContainer = document.getElementById('summary-table-container');
+const summaryTableContainer = document.getElementById(
+  'summary-table-container'
+);
 
 
-
-// renderNotesTable();
-// renderSummaryTable();
 
 function modalCategoryOptions() {
   const selectElement = document.getElementById('modal-category');
@@ -28,6 +22,9 @@ function modalCategoryOptions() {
   });
 }
 
-buildTasksList();
+renderTasksTable();
+renderArchiveTable()
+// renderSummaryTable();
+// buildTasksList();
 modalCategoryOptions();
 // openModalForAdd();

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,8 +7,8 @@
     <title>Radency task 1</title>
   </head>
 
-  <body>
-    <main id="app" class="w-full max-w-[1366px] p-[2rem]">
+  <body class="m-0 min-h-screen min-w-[320px]">
+    <main id="app" class="mx-auto max-w-[1366px] p-[2rem]">
       <!-- <div>
         <h1>Notes App</h1>
         <div id="form-container">
@@ -25,143 +25,194 @@
           </form>
         </div>
       </div> -->
+      <div>
+        <table class="mb-10 w-full">
+          <thead>
+            <tr class="bg-gray-400">
+              <td></td>
+              <th>Name</th>
+              <th>Created</th>
+              <th>Category</th>
+              <th>Content</th>
+              <th>Dates</th>
+              <td></td>
+              <th>Archive</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
 
-      <table class="mb-10">
-        <thead>
-          <tr class="bg-gray-400">
-            <th></th>
-            <th>Name</th>
-            <th>Created</th>
-            <th>Category</th>
-            <th>Content</th>
-            <th>Dates</th>
-            <th></th>
-            <th>Archive</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
+          <tbody id="notes-table-container">
+            <tr>
+              <td></td>
+              <td>1</td>
+              <td>2023-07-31T08:30:00</td>
+              <td>Task</td>
+              <td>Buy groceries for the week.</td>
+              <td>3/5/2021, 5/5/2021</td>
+              <td>
+                <button class="m-auto">
+                  <img src="/edit.svg" alt="edit" />
+                </button>
+              </td>
+              <td>
+                <div class="flex justify-center">
+                  <button><img src="/archive.svg" alt="archive" /></button>
+                </div>
+              </td>
+              <td>
+                <button class="m-auto">
+                  <img src="/delete.svg" alt="delete" />
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <tbody id="notes-table-container">
-          <tr>
-            <td></td>
-            <td>1</td>
-            <td>2023-07-31T08:30:00</td>
-            <td>Task</td>
-            <td>Buy groceries for the week.</td>
-            <td>3/5/2021, 5/5/2021</td>
-            <td>
-              <button class="m-auto"><img src="/edit.svg" alt="edit" /></button>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <button><img src="/archive.svg" alt="archive" /></button>
-              </div>
-            </td>
-            <td>
-              <button class="m-auto">
-                <img src="/delete.svg" alt="delete" />
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="mb-10 flex justify-evenly">
+        <button
+          id="add-task-btn"
+          class="flex items-center gap-2 rounded-md border-2 border-gray-400 px-4 py-2 transition hover:bg-gray-500"
+        >
+          <img src="/add.svg" alt="add task" />ADD TASK
+        </button>
 
-      <button
-        id="add-task"
-        class="mx-auto mb-10 border-2 flex w-fit py-2 px-5 gap-2 items-center border-gray-400"
-      >
-        <img src="/add.svg" alt="add task" />ADD TASK
-      </button>
+        <button
+          id="toggle-archive-btn"
+          class="flex items-center gap-2 rounded-md border-2 border-gray-400 px-4 py-2 transition hover:bg-gray-500"
+        >
+          <img src="/archive.svg" alt="add task" />ARCHIVE
+        </button>
+      </div>
 
-      <table class="mb-10">
-        <thead>
-          <tr class="bg-gray-400">
-            <th>Name Category</th>
-            <th>Active</th>
-            <th>Archived</th>
-          </tr>
-        </thead>
+      <div id="archive-table" class="max-h-0 overflow-hidden transition-all h-full">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-gray-400">
+              <td></td>
+              <th>Name</th>
+              <th>Created</th>
+              <th>Category</th>
+              <th>Content</th>
+              <th>Dates</th>
+              <th>Archive</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
 
-        <tbody id="summary-table-body">
-          <tr>
-            <td>Task</td>
-            <td>2</td>
-            <td>1</td>
-          </tr>
+          <tbody id="archive-table-container" >
+            <tr>
+              <td></td>
+              <td>1</td>
+              <td>2023-07-31T08:30:00</td>
+              <td>Task</td>
+              <td>Buy groceries for the week.</td>
+              <td>3/5/2021, 5/5/2021</td>
 
-          <tr>
-            <td>Random Thought</td>
-            <td>1</td>
-            <td>1</td>
-          </tr>
+              <td>
+                <div class="flex justify-center">
+                  <button><img src="/restore.svg" alt="restore" /></button>
+                </div>
+              </td>
 
-          <tr>
-            <td>Idea</td>
-            <td>1</td>
-            <td>0</td>
-          </tr>
-        </tbody>
-      </table>
+              <td>
+                <button class="m-auto">
+                  <img src="/delete.svg" alt="delete" />
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <div class="hidden">
-        <h1>Task Form</h1>
-        <div id="form-container" class="border border-red-500">
-          <form id="note-form">
-            <label for="note-content">Note Content:</label>
-            <input type="text" id="note-content" required />
-            <label for="note-category">Category:</label>
-            <select id="note-category" required>
-              <option value="Task">Task</option>
-              <option value="Random Thought">Random Thought</option>
-              <option value="Idea">Idea</option>
-            </select>
-            <button type="submit">Add Note</button>
-          </form>
-        </div>
+      <div>
+        <table class="w-full">
+          <thead>
+            <tr class="bg-gray-400">
+              <th>Name Category</th>
+              <th>Active</th>
+              <th>Archived</th>
+            </tr>
+          </thead>
+
+          <tbody id="summary-table-body">
+            <tr>
+              <td>Task</td>
+              <td>2</td>
+              <td>1</td>
+            </tr>
+
+            <tr>
+              <td>Random Thought</td>
+              <td>1</td>
+              <td>1</td>
+            </tr>
+
+            <tr>
+              <td>Idea</td>
+              <td>1</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </main>
 
+    <!-- <div >
+          <h1>Task Form</h1>
+            <div id="form-container" class="border border-red-500">
+              <form id="note-form">
+                <label for="note-content">Note Content:</label>
+                <input type="text" id="note-content" required />
+                <label for="note-category">Category:</label>
+                <select id="note-category" required>
+                  <option value="Task">Task</option>
+                  <option value="Random Thought">Random Thought</option>
+                  <option value="Idea">Idea</option>
+                </select>
+                <button type="submit">Add Note</button>
+              </form>
+            </div>
+          </div> -->
+
     <div
       id="modal"
-      class="hidden fixed justify-center items-center left-0 top-0 h-full w-full min-w-[38.4rem] bg-slate-900 bg-opacity-50"
+      class="fixed left-0 top-0 hidden h-full w-full items-center justify-center bg-slate-900 bg-opacity-50"
     >
-      <div class="modal-content bg-slate-500 relative p-8 rounded-md">
-        <button
-          id="close-btn"
-          class="close-btn absolute right-5 top-2 text-3xl"
-        >
-          &times;
-        </button>
+      <div class="modal-content relative rounded-md bg-slate-500 p-8">
+        <div class="close-btn absolute right-5 top-2 text-3xl">
+          <button id="close-modal-btn">&times;</button>
+        </div>
 
         <h3 class="text-center font-semibold">Add/Edit Task</h3>
 
         <form id="modal-form">
-          <div class="flex flex-col w-96 gap-2">
+          <div class="flex w-96 flex-col gap-2">
             <label for="modal-name">Name:</label>
             <input
               type="text"
               id="modal-name"
-              class="p-2 rounded-sm text-slate-800"
+              class="rounded-sm p-2 text-slate-800"
               required
             />
 
             <label for="modal-category">Category:</label>
             <select
               id="modal-category"
-              class="p-2 rounded-sm text-slate-800"
+              class="rounded-sm p-2 text-slate-800"
               required
             ></select>
 
             <label for="modal-content">Content:</label>
             <textarea
               id="modal-content"
-              class="p-2 rounded-sm text-slate-800"
+              class="rounded-sm p-2 text-slate-800"
               required
             ></textarea>
 
             <button
               type="submit"
-              class="border rounded-md w-1/2 self-center mt-6 font-semibold"
+              class="mt-6 w-1/2 self-center rounded-md border font-semibold"
             >
               Save
             </button>
@@ -170,10 +221,10 @@
       </div>
     </div>
 
-    <!-- <script type="module" src="./src/js/data.js"></script>
-      <script type="module" src="./src/js/render.js"></script>
-      <script type="module" src="./src/js/events.js"></script>
-      <script type="module" src="./src/js/utils.js"></script> -->
+    <script type="module" src="./src/js/data.js"></script>
+    <script type="module" src="./src/js/render.js"></script>
+    <script type="module" src="./src/js/events.js"></script>
+    <script type="module" src="./src/js/utils.js"></script>
     <script type="module" src="./src/js/main.js"></script>
   </body>
 </html>

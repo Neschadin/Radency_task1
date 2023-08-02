@@ -1,23 +1,34 @@
-const addTaskButton = document.getElementById('add-task');
+const addTaskBtn = document.getElementById('add-task-btn');
 const modal = document.getElementById('modal');
 const modalName = document.getElementById('modal-name');
 const modalCategory = document.getElementById('modal-category');
 const modalContent = document.getElementById('modal-content');
+const closeModalBtn = document.getElementById('close-modal-btn');
+const addTaskForm = document.getElementById('modal-form');
 
-addTaskButton.addEventListener('click', openModalForAdd);
+addTaskBtn.addEventListener('click', openModalForAdd);
+closeModalBtn.addEventListener('click', closeModal);
+addTaskForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  closeModal()
+});
 
 export function openModalForAdd() {
   modal.classList.remove('hidden');
   modal.classList.add('flex');
-
-//   modalName.value = '';
-//   modalCategory.value = 'Task';
-//   modalContent.value = '';
 }
 
+export function closeModal() {
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+
+  modalName.value = '';
+  modalCategory.value = 'Task';
+  modalContent.value = '';
+}
 
 export function openModalForEdit(taskId) {
-  const taskData = getTaskById(taskId); // Replace this with your function to get task data by ID
+  const taskData = getTaskById(taskId);
 
   if (taskData) {
     modal.classList.remove('hidden');
@@ -29,10 +40,7 @@ export function openModalForEdit(taskId) {
   }
 }
 
-const noteForm = document.getElementById('note-form');
-noteForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-});
+
 
 
 // {const notesTable = document
