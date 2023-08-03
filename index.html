@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/output.css" rel="stylesheet" />
     <title>Radency task 1</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
+    />
   </head>
 
-  <body class="m-0 min-h-screen min-w-[320px]">
-    <main id="app" class="mx-auto max-w-[1366px] p-[2rem]">
+  <body class="m-0 min-h-screen min-w-[320px] bg-neutral-700 text-neutral-50">
+    <main id="app" class="mx-auto flex max-w-[1366px] flex-col gap-10 p-[2rem]">
       <!-- <div>
         <h1>Notes App</h1>
         <div id="form-container">
@@ -26,103 +30,41 @@
         </div>
       </div> -->
       <div>
-        <table class="mb-10 w-full">
-          <thead>
-            <tr class="bg-gray-400">
-              <td></td>
-              <th>Name</th>
-              <th>Created</th>
-              <th>Category</th>
-              <th>Content</th>
-              <th>Dates</th>
-              <td></td>
-              <th>Archive</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-
-          <tbody id="notes-table-container">
-            <tr>
-              <td></td>
-              <td>1</td>
-              <td>2023-07-31T08:30:00</td>
-              <td>Task</td>
-              <td>Buy groceries for the week.</td>
-              <td>3/5/2021, 5/5/2021</td>
-              <td>
-                <button class="m-auto">
-                  <img src="/edit.svg" alt="edit" />
-                </button>
-              </td>
-              <td>
-                <div class="flex justify-center">
-                  <button><img src="/archive.svg" alt="archive" /></button>
-                </div>
-              </td>
-              <td>
-                <button class="m-auto">
-                  <img src="/delete.svg" alt="delete" />
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="mb-10 flex justify-evenly">
-        <button
-          id="add-task-btn"
-          class="flex items-center gap-2 rounded-md border-2 border-gray-400 px-4 py-2 transition hover:bg-gray-500"
-        >
-          <img src="/add.svg" alt="add task" />ADD TASK
-        </button>
-
-        <button
-          id="toggle-archive-btn"
-          class="flex items-center gap-2 rounded-md border-2 border-gray-400 px-4 py-2 transition hover:bg-gray-500"
-        >
-          <img src="/archive.svg" alt="add task" />ARCHIVE
-        </button>
-      </div>
-
-      <div id="archive-table" class="max-h-0 overflow-hidden transition-all h-full">
         <table class="w-full">
           <thead>
             <tr class="bg-gray-400">
               <td></td>
-              <th>Name</th>
-              <th>Created</th>
-              <th>Category</th>
-              <th>Content</th>
-              <th>Dates</th>
-              <th>Archive</th>
-              <th>Delete</th>
+              <th class="w-[12%]">Name</th>
+              <th class="w-[10%]">Created</th>
+              <th class="w-[14%]">Category</th>
+              <th class="w-full">Content</th>
+              <th class="w-fit">Dates</th>
+              <td class="w-[50px]"></td>
+              <td class="w-[50px]"></td>
+              <td class="w-[50px]"></td>
             </tr>
           </thead>
 
-          <tbody id="archive-table-container" >
-            <tr>
-              <td></td>
-              <td>1</td>
-              <td>2023-07-31T08:30:00</td>
-              <td>Task</td>
-              <td>Buy groceries for the week.</td>
-              <td>3/5/2021, 5/5/2021</td>
-
-              <td>
-                <div class="flex justify-center">
-                  <button><img src="/restore.svg" alt="restore" /></button>
-                </div>
-              </td>
-
-              <td>
-                <button class="m-auto">
-                  <img src="/delete.svg" alt="delete" />
-                </button>
-              </td>
-            </tr>
-          </tbody>
+          <tbody id="notes-table-container"></tbody>
         </table>
+      </div>
+
+      <div class="flex justify-evenly">
+        <button
+          id="add-task-btn"
+          class="flex items-center gap-2 rounded-md border-2 border-gray-400 px-4 py-2 transition hover:bg-gray-500"
+        >
+          <span class="material-symbols-outlined"> add_circle </span
+          ><span>ADD TASK</span>
+        </button>
+
+        <button
+          id="show-archive-btn"
+          class="flex items-center gap-2 rounded-md border-2 border-gray-400 px-4 py-2 transition hover:bg-gray-500"
+        >
+          <span class="material-symbols-outlined"> inventory_2 </span
+          ><span>ARCHIVE</span>
+        </button>
       </div>
 
       <div>
@@ -135,25 +77,7 @@
             </tr>
           </thead>
 
-          <tbody id="summary-table-body">
-            <tr>
-              <td>Task</td>
-              <td>2</td>
-              <td>1</td>
-            </tr>
-
-            <tr>
-              <td>Random Thought</td>
-              <td>1</td>
-              <td>1</td>
-            </tr>
-
-            <tr>
-              <td>Idea</td>
-              <td>1</td>
-              <td>0</td>
-            </tr>
-          </tbody>
+          <tbody id="summary-table-container"></tbody>
         </table>
       </div>
     </main>
@@ -179,45 +103,71 @@
       id="modal"
       class="fixed left-0 top-0 hidden h-full w-full items-center justify-center bg-slate-900 bg-opacity-50"
     >
-      <div class="modal-content relative rounded-md bg-slate-500 p-8">
+      <div class="relative rounded-md bg-slate-500 px-8 py-16">
         <div class="close-btn absolute right-5 top-2 text-3xl">
           <button id="close-modal-btn">&times;</button>
         </div>
 
-        <h3 class="text-center font-semibold">Add/Edit Task</h3>
+        <div id="add-task-form" class="hidden">
+          <h3 class="text-center font-semibold">Add/Edit Task</h3>
 
-        <form id="modal-form">
-          <div class="flex w-96 flex-col gap-2">
-            <label for="modal-name">Name:</label>
-            <input
-              type="text"
-              id="modal-name"
-              class="rounded-sm p-2 text-slate-800"
-              required
-            />
+          <form id="modal-form">
+            <div class="flex w-96 flex-col gap-2">
+              <label for="modal-name">Name:</label>
+              <input
+                type="text"
+                id="modal-name"
+                name="name"
+                class="rounded-sm p-2 text-slate-800"
+                required
+              />
 
-            <label for="modal-category">Category:</label>
-            <select
-              id="modal-category"
-              class="rounded-sm p-2 text-slate-800"
-              required
-            ></select>
+              <label for="modal-category">Category:</label>
+              <select
+                id="modal-category"
+                name="category"
+                class="rounded-sm p-2 text-slate-800"
+                required
+              ></select>
 
-            <label for="modal-content">Content:</label>
-            <textarea
-              id="modal-content"
-              class="rounded-sm p-2 text-slate-800"
-              required
-            ></textarea>
+              <label for="modal-content">Content:</label>
+              <textarea
+                id="modal-content"
+                name="content"
+                class="rounded-sm p-2 text-slate-800"
+                required
+              ></textarea>
 
-            <button
-              type="submit"
-              class="mt-6 w-1/2 self-center rounded-md border font-semibold"
-            >
-              Save
-            </button>
-          </div>
-        </form>
+              <input type="hidden" id="modal-taskId" name="taskId" />
+
+              <button
+                type="submit"
+                class="mt-6 w-1/2 self-center rounded-md border font-semibold"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="archive-table" class="relative hidden w-[1280px]">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-gray-400">
+                <td></td>
+                <th class="w-[12%]">Name</th>
+                <th class="w-[10%]">Created</th>
+                <th class="w-[14%]">Category</th>
+                <th class="w-full">Content</th>
+                <th class="w-fit">Dates</th>
+                <td class="w-[50px]"></td>
+                <td class="w-[50px]"></td>
+              </tr>
+            </thead>
+
+            <tbody id="archive-table-container"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -225,6 +175,7 @@
     <script type="module" src="./src/js/render.js"></script>
     <script type="module" src="./src/js/events.js"></script>
     <script type="module" src="./src/js/utils.js"></script>
+    <script type="module" src="./src/js/modal.js"></script>
     <script type="module" src="./src/js/main.js"></script>
   </body>
 </html>

@@ -7,7 +7,17 @@ export function extractDatesFromContent(content) {
   }
 }
 
-export function countNotesByCategory(notes, category, archived) {
+export function countCategories(DB) {
+  return DB.reduce((result, task) => {
+    const { category } = task;
+
+    if (!result[category]) {
+      result[category] = 1;
+    } else {
+      result[category]++;
+    }
+    return result;
+  }, {});
 }
 
 export function formatDate(dateString) {
@@ -31,4 +41,8 @@ export function formatDate(dateString) {
   const year = date.getFullYear();
 
   return `${month} ${day}, ${year}`;
+}
+
+export function genId() {
+  return Math.floor(Math.random() * 1000000);
 }

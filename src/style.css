@@ -5,9 +5,6 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
-  color: #eeeeee;
-  background-color: #555555;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,5 +21,5 @@
 
 th,
 td {
-  @apply border-b border-gray-400 p-3;
+  @apply border-b border-gray-400 p-3 text-left;
 }

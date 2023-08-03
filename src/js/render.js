@@ -1,20 +1,26 @@
 import data from '../data.json';
-import { extractDatesFromContent, formatDate } from './utils';
+import { handleEditTask } from './modal';
+import {
+  countCategories,
+  extractDatesFromContent,
+  formatDate,
+  genId,
+} from './utils';
 
 const tasksTable = document.getElementById('notes-table-container');
 const summaryTable = document.getElementById('summary-table-container');
 const archiveTable = document.getElementById('archive-table-container');
 const categories = ['Task', 'Random Thought', 'Idea'];
-const mockupData = data.data;
-let archiveData = [];
+const mockupDB = data.data;
+const archiveDB = [];
 
-function createBtn(id, iconAlt, iconSrc) {
+function createBtn(id, icon) {
   return `
-    <div class="flex justify-center">
+    <td>
     <button id="${id}">
-    <img src="${iconSrc}" alt="${iconAlt}" />
+    <span class="material-symbols-outlined">${icon}</span>
     </button>
-    </div>
+    </td>
   `;
 }
 
@@ -23,40 +29,48 @@ export function createTableRow(data, isArchive = false) {
   const newRow = document.createElement('tr');
   newRow.id = id;
 
-  const action = isArchive ? 'restore' : 'archive';
+  const archAction = isArchive ? 'unarchive' : 'archive';
+  const icon = archAction;
   const deleteAction = isArchive ? 'arch_delete' : 'delete';
-  const icon = isArchive ? '/restore.svg' : '/archive.svg';
-  const editBtnCell = isArchive
-    ? ''
-    : `<td>${createBtn('edit_' + id, 'edit', '/edit.svg')}</td>`;
+  const editBtnCell = isArchive ? '' : createBtn('edit_' + id, 'edit');
 
   newRow.innerHTML = `
     <td></td>
     <td>${name}</td>
     <td>${formatDate(createdAt)}</td>
-    <td>${content}</td>
     <td>${category}</td>
+    <td>${content}</td>
     <td>${extractDatesFromContent(content) || ''}</td>
     ${editBtnCell}
-    <td>${createBtn(action + '_' + id, action, icon)}</td>
-    <td>${createBtn(deleteAction + '_' + id, 'delete', '/delete.svg')}</td>
+    ${createBtn(archAction + '_' + id, icon)}
+    ${createBtn(deleteAction + '_' + id, 'delete')}
   `;
 
   return newRow;
 }
 
 function handleEdit(id) {
-  const elemToEdit = document.getElementById(id);
+  // const elemToEdit = document.getElementById(id);
+  const editTask = getTaskById(id);
+  handleEditTask(editTask);
 }
 
 function handleArchive(id) {
   const elemToArchive = document.getElementById(id);
   elemToArchive.remove();
 
-  moveToArchiveDB(id);
-  deleteFromDB(id, mockupData);
+  moveTaskBetweenDatabases(id, mockupDB, archiveDB);
+  deleteFromDB(id, mockupDB);
   renderArchiveTable();
-  // updateSummaryTables();
+  renderSummaryTable();
+}
+
+function handleUnarchive(id) {
+  moveTaskBetweenDatabases(id, archiveDB, mockupDB);
+  deleteFromDB(id, archiveDB);
+  renderArchiveTable();
+  renderTasksTable();
+  renderSummaryTable();
 }
 
 function handleDelete(id) {
@@ -64,17 +78,37 @@ function handleDelete(id) {
   if (!elemToDelete) return;
 
   elemToDelete.remove();
-  deleteFromDB(id, mockupData);
-  // updateSummaryTables();
+  deleteFromDB(id, mockupDB);
+  renderSummaryTable();
 }
 
-function handleArchDelete(id) {
-  const elemToDelete = document.getElementById(id);
-  if (!elemToDelete) return;
+function handleArchiveDelete(id) {
+  deleteFromDB(id, archiveDB);
+  renderArchiveTable();
+  renderSummaryTable();
+}
 
-  elemToDelete.remove();
-  deleteFromDB(id, archiveData);
-  // updateSummaryTables();
+export function addTaskToDB(newTask) {
+  const now = new Date();
+  const formattedDate = now.toISOString().slice(0, 19);
+  const { createdAt } = getTaskById(newTask.id);
+  const checkCreatedAt = newTask.id ? createdAt : formattedDate;
+  const id = newTask.id ? newTask.id : genId();
+
+  const preparedNewTask = {
+    ...newTask,
+    id,
+    createdAt: checkCreatedAt,
+  };
+
+  mockupDB.push(preparedNewTask);
+  renderTasksTable();
+  renderSummaryTable();
+  console.log(mockupDB);
+}
+
+function getTaskById(id) {
+  return mockupDB.find((task) => task.id === +id);
 }
 
 function deleteFromDB(id, db) {
@@ -84,19 +118,22 @@ function deleteFromDB(id, db) {
   db.splice(i, 1);
 }
 
-function moveToArchiveDB(id) {
-  const i = mockupData.findIndex((task) => task.id === +id);
+function moveTaskBetweenDatabases(id, sourceDB, targetDB) {
+  const i = sourceDB.findIndex((task) => task.id === +id);
   if (i === -1) return;
-  const archivedTask = mockupData.splice(i, 1)[0];
-  archiveData.push(archivedTask);
-  console.log(archiveData);
+
+  const task = sourceDB.splice(i, 1)[0];
+  targetDB.push(task);
+
+  console.log(mockupDB);
+  console.log(archiveDB);
 }
 
 // done
 function attachListenersToBtns(rowElement) {
   const editBtn = rowElement.querySelector(`button[id^="edit_"]`);
   const archiveBtn = rowElement.querySelector(`button[id^="archive_"]`);
-  const restoreBtn = rowElement.querySelector(`button[id^="restore_"]`);
+  const unarchiveBtn = rowElement.querySelector(`button[id^="unarchive_"]`);
   const deleteBtn = rowElement.querySelector(`button[id^="delete_"]`);
   const archDeleteBtn = rowElement.querySelector(`button[id^="arch_delete_"]`);
 
@@ -104,17 +141,18 @@ function attachListenersToBtns(rowElement) {
 
   editBtn && editBtn.addEventListener('click', () => handleEdit(id));
   archiveBtn && archiveBtn.addEventListener('click', () => handleArchive(id));
-  restoreBtn && restoreBtn.addEventListener('click', () => handleRestore(id));
   deleteBtn && deleteBtn.addEventListener('click', () => handleDelete(id));
+  unarchiveBtn &&
+    unarchiveBtn.addEventListener('click', () => handleUnarchive(id));
   archDeleteBtn &&
-    archDeleteBtn.addEventListener('click', () => handleArchDelete(id));
+    archDeleteBtn.addEventListener('click', () => handleArchiveDelete(id));
 }
 
 // Tasks
 export function renderTasksTable() {
-  // tasksTable.innerHTML = '';
+  tasksTable.innerHTML = '';
 
-  mockupData.forEach((item) => {
+  mockupDB.forEach((item) => {
     const elem = createTableRow(item);
     attachListenersToBtns(elem);
 
@@ -123,64 +161,43 @@ export function renderTasksTable() {
 }
 
 // ARCHIVE
-const archiveTableContainer = document.getElementById('archive-table');
-
 export function renderArchiveTable() {
-  // Remove the max-h-0 and overflow-hidden classes to make sure the table is visible
-  archiveTableContainer.classList.remove('max-h-0', 'overflow-hidden');
-  archiveTableContainer.classList.add('h-full');
-  
   archiveTable.innerHTML = '';
 
-  archiveData.forEach((item) => {
+  if (archiveDB.length === 0) {
+    archiveTable.innerHTML =
+      '<tr><td colspan="8" class="text-xl text-center font-semibold">Empty!</td></tr>';
+    return;
+  }
+
+  archiveDB.forEach((item) => {
     const elem = createTableRow(item, true);
     attachListenersToBtns(elem);
 
     archiveTable.appendChild(elem);
   });
-
-  // Add the max-h-0 and overflow-hidden classes back to hide the table
-  archiveTableContainer.classList.add('max-h-0', 'overflow-hidden');
 }
 
+export function renderSummaryTable() {
+  summaryTable.innerHTML = '';
 
-function renderSummaryTable() {
-  // summaryTable.innerHTML = '';
-  let summaryTableHTML = '';
+  const activeCategoryCounts = countCategories(mockupDB);
+  const archivedCategoryCounts = countCategories(archiveDB);
 
-  for (const category of categories) {
-    const activeCount = countNotesByCategory(notesData, category, false);
-    const archivedCount = countNotesByCategory(notesData, category, true);
+  categories.forEach((category) => {
+    const newRow = document.createElement('tr');
 
-    summaryTableHTML += `<tr>`;
-    summaryTableHTML += `<td>${category}</td>`;
-    summaryTableHTML += `<td>${activeCount}</td>`;
-    summaryTableHTML += `<td>${archivedCount}</td>`;
-    summaryTableHTML += `</tr>`;
-  }
+    const activeCount = activeCategoryCounts[category] || 0;
+    const archivedCount = archivedCategoryCounts[category] || 0;
 
-  summaryTableHTML += '</table>';
-  summaryTableContainer.innerHTML = summaryTableHTML;
+    newRow.innerHTML = `
+      <tr>
+      <td>${category}</td>
+      <td>${activeCount}</td>
+      <td>${archivedCount}</td>
+      </tr>
+      `;
+
+    summaryTable.append(newRow);
+  });
 }
-
-// trash
-
-// export function renderTasksTableRow(data) {
-//   const { id, name, createdAt, content, category } = data;
-//   const newRow = document.createElement('tr');
-//   newRow.id = id;
-
-//   newRow.innerHTML = `
-//     <td></td>
-//     <td>${name}</td>
-//     <td>${formatDate(createdAt)}</td>
-//     <td>${content}</td>
-//     <td>${category}</td>
-//     <td>${extractDatesFromContent(content) || ''}</td>
-//     <td>${createBtn('edit_' + id, 'edit', '/edit.svg')}</td>
-//     <td>${createBtn('archive_' + id, 'archive', '/archive.svg')}</td>
-//     <td>${createBtn('delete_' + id, 'delete', '/delete.svg')}</td>
-//   `;
-
-//   return newRow;
-// }
