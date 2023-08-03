@@ -68,7 +68,6 @@ function prepareTaskToSave(newTask) {
 
 export function updateTaskInDB(id, newTask) {
   const i = mockupDB.findIndex((task) => task.id === id);
-  console.log('upd' , mockupDB);
 
   try {
     if (i !== -1) mockupDB[i] = newTask;
@@ -79,7 +78,7 @@ export function updateTaskInDB(id, newTask) {
 
 export function saveTaskToDB(newTask) {
   const preparedNewTask = prepareTaskToSave(newTask);
-console.log('save', mockupDB);
+
   try {
     if (newTask.id) {
       updateTaskInDB(newTask.id, preparedNewTask);
