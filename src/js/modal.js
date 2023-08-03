@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+
 import { saveTaskToDB, categories } from './data';
 import { renderTasksTable, renderSummaryTable } from './render';
 
@@ -41,9 +43,9 @@ function submit(e) {
 
   const newTask = {
     id: +modalTaskId.value || null,
-    name: modalName.value,
-    content: modalContent.value,
-    category: modalCategory.value,
+    name: DOMPurify.sanitize(modalName.value),
+    content: DOMPurify.sanitize(modalContent.value),
+    category: DOMPurify.sanitize(modalCategory.value),
   };
 
   closeModal();
