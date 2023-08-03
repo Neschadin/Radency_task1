@@ -78,6 +78,7 @@ export function updateTaskInDB(id, newTask) {
 
 export function saveTaskToDB(newTask) {
   const preparedNewTask = prepareTaskToSave(newTask);
+
   try {
     if (newTask.id) {
       updateTaskInDB(newTask.id, preparedNewTask);
