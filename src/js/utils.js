@@ -11,12 +11,16 @@ export function extractDatesFromContent(content) {
 
 export function counterCategories(DB) {
   return DB.reduce((result, task) => {
-    const { category } = task;
+    const { category, archived } = task;
 
     if (!result[category]) {
-      result[category] = 1;
+      result[category] = { active: 0, archived: 0 };
+    }
+
+    if (archived) {
+      result[category].archived++;
     } else {
-      result[category]++;
+      result[category].active++;
     }
 
     return result;

@@ -1,5 +1,10 @@
-import { handlerEditTask } from './modal';
-import { deleteFromDB, getTaskById, moveTaskBetweenDatabases } from './data';
+import { closeModal, handlerEditTask } from './modal';
+import {
+  checkerArchiveTasks,
+  deleteFromDB,
+  getTaskById,
+  toggleTaskArchivedStatus,
+} from './data';
 import {
   renderArchiveTable,
   renderSummaryTable,
@@ -11,7 +16,6 @@ export function attachListenersToBtns(rowElement) {
   const archiveBtn = rowElement.querySelector(`button[id^="archive_"]`);
   const unarchiveBtn = rowElement.querySelector(`button[id^="unarchive_"]`);
   const deleteBtn = rowElement.querySelector(`button[id^="delete_"]`);
-  const archDeleteBtn = rowElement.querySelector(`button[id^="arch_delete_"]`);
 
   const id = rowElement.id;
 
@@ -20,8 +24,6 @@ export function attachListenersToBtns(rowElement) {
   deleteBtn && deleteBtn.addEventListener('click', () => handleDelete(id));
   unarchiveBtn &&
     unarchiveBtn.addEventListener('click', () => handleUnarchive(id));
-  archDeleteBtn &&
-    archDeleteBtn.addEventListener('click', () => handleArchiveDelete(id));
 }
 
 function handleEdit(id) {
@@ -30,34 +32,28 @@ function handleEdit(id) {
 }
 
 function handleArchive(id) {
-  const elemToArchive = document.getElementById(id);
-  elemToArchive.remove();
-
-  moveTaskBetweenDatabases(id, 'archive');
-  deleteFromDB(id, 'mockupDB');
-  renderArchiveTable();
-  renderSummaryTable();
+  toggleTaskArchivedStatus(id, 'archive');
+  rerenderAllTables();
 }
 
 function handleUnarchive(id) {
-  moveTaskBetweenDatabases(id, 'unarchive');
-  deleteFromDB(id, 'archiveDB');
-  renderArchiveTable();
-  renderTasksTable();
-  renderSummaryTable();
+  toggleTaskArchivedStatus(id, 'unarchive');
+  rerenderAllTables();
+
+  const checkArchiveTasks = checkerArchiveTasks();
+  if (!checkArchiveTasks) closeModal();
 }
 
 function handleDelete(id) {
-  const elemToDelete = document.getElementById(id);
-  if (!elemToDelete) return;
+  deleteFromDB(id);
+  rerenderAllTables();
 
-  elemToDelete.remove();
-  deleteFromDB(id, 'mockupDB');
-  renderSummaryTable();
+  const checkArchiveTasks = checkerArchiveTasks();
+  if (!checkArchiveTasks) closeModal();
 }
 
-function handleArchiveDelete(id) {
-  deleteFromDB(id, 'archiveDB');
-  renderArchiveTable();
+function rerenderAllTables() {
   renderSummaryTable();
+  renderArchiveTable();
+  renderTasksTable();
 }

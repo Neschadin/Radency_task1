@@ -1,50 +1,44 @@
-import data from '../data.json';
+import { data } from '../data.json';
 import { generateId } from './utils';
 
-export const mockupDB = data.data;
-export const archiveDB = [];
+export const mockupDB = data;
 export const categories = ['Task', 'Random Thought', 'Idea'];
 
 export function getTaskById(id) {
   return mockupDB.find((task) => task.id === +id);
 }
 
-export function deleteFromDB(id, targetDB) {
-  const db =
-    targetDB === 'mockupDB'
-      ? mockupDB
-      : targetDB === 'archiveDB'
-      ? archiveDB
-      : null;
+function indexFinder(id) {
+  return mockupDB.findIndex((task) => task.id === +id);
+}
 
-  if (!db) return;
+export function checkerArchiveTasks() {
+  return mockupDB.some((item) => item.archived);
+}
 
+export function deleteFromDB(id) {
   try {
-    const i = db.findIndex((task) => task.id === +id);
+    const i = indexFinder(id);
     if (i === -1) return;
 
-    db.splice(i, 1);
+    mockupDB.splice(i, 1);
   } catch (error) {
     console.error('An error occurred while deleting from the database:', error);
   }
 }
 
-export function moveTaskBetweenDatabases(id, action) {
-  const sourceDB =
-    action === 'archive' ? mockupDB : action === 'unarchive' ? archiveDB : null;
-  const targetDB =
-    action === 'archive' ? archiveDB : action === 'unarchive' ? mockupDB : null;
-
-  if (!sourceDB || !targetDB) return;
-
+export function toggleTaskArchivedStatus(id, action) {
   try {
-    const i = sourceDB.findIndex((task) => task.id === +id);
+    const i = indexFinder(id);
     if (i === -1) return;
 
-    const task = sourceDB.splice(i, 1)[0];
-    targetDB.push(task);
+    if (action === 'archive') {
+      mockupDB[i].archived = true;
+    } else if (action === 'unarchive') {
+      delete mockupDB[i].archived;
+    }
   } catch (error) {
-    console.error('An error occurred while moving between databases:', error);
+    console.error('An error occurred while marking task as archived:', error);
   }
 }
 
@@ -66,22 +60,14 @@ function prepareTaskToSave(newTask) {
   }
 }
 
-export function updateTaskInDB(id, newTask) {
-  const i = mockupDB.findIndex((task) => task.id === id);
-
-  try {
-    if (i !== -1) mockupDB[i] = newTask;
-  } catch (error) {
-    console.error('An error occurred while updating the database:', error);
-  }
-}
-
 export function saveTaskToDB(newTask) {
   const preparedNewTask = prepareTaskToSave(newTask);
+  const { id } = newTask;
 
   try {
-    if (newTask.id) {
-      updateTaskInDB(newTask.id, preparedNewTask);
+    if (id) {
+      const i = indexFinder(id);
+      if (i !== -1) mockupDB[i] = preparedNewTask;
     } else {
       mockupDB.push(preparedNewTask);
     }
