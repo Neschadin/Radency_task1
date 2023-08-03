@@ -34,10 +34,8 @@ export function createTableRow(data, isArchive = false) {
   const { id, name, createdAt, content, category } = data;
   const newRow = document.createElement('tr');
   newRow.id = id;
-
   const archAction = isArchive ? 'unarchive' : 'archive';
   const icon = archAction;
-  const deleteAction = isArchive ? 'arch_delete' : 'delete';
   const editBtnCell = isArchive ? '' : createBtn('edit_' + id, 'edit');
 
   newRow.innerHTML = `
@@ -49,12 +47,12 @@ export function createTableRow(data, isArchive = false) {
       <td>${extractDatesFromContent(content) || ''}</td>
       ${editBtnCell}
       ${createBtn(archAction + '_' + id, icon)}
-      ${createBtn(deleteAction + '_' + id, 'delete')}
+      ${createBtn('delete_' + id, 'delete')}
     `;
 
   return newRow;
 }
 
 export function emptyMessage(message) {
-  return `<tr class="w-full"><td colspan="8" class="text-xl text-center font-semibold">${message}</td></tr>`;
+  return `<tr><td colspan="10" class="text-xl text-center font-semibold">${message}</td></tr>`;
 }

@@ -18,19 +18,25 @@ const modalCategory = document.getElementById('modal-category');
 const modalContent = document.getElementById('modal-content');
 const modalTaskId = document.getElementById('modal-taskId');
 
-closeModalBtn.addEventListener('click', closeModal);
 addTaskForm.addEventListener('submit', submit);
 archiveTableBtn.addEventListener('click', () =>
   showContent(contentArchiveTable)
 );
 addTaskBtn.addEventListener('click', () => showContent(contentAddTaskForm));
+closeModalBtn.addEventListener('click', closeModal);
+document.addEventListener('keydown', closeModalOnEsc);
+
+function closeModalOnEsc(e) {
+  if (modal.classList.contains('hidden')) return;
+  if (e.key === 'Escape' || e.key === 'Esc') closeModal();
+}
 
 function openModal() {
   modal.classList.remove('hidden');
   modal.classList.add('flex');
 }
 
-function closeModal() {
+export function closeModal() {
   modal.classList.add('hidden');
   modal.classList.remove('flex');
 

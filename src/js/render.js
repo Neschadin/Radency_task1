@@ -5,7 +5,7 @@ import {
   createCategoryIcon,
   emptyMessage,
 } from './tableElements';
-import { archiveDB, categories, mockupDB } from './data';
+import { categories, checkerArchiveTasks, mockupDB } from './data';
 
 const tasksTable = document.getElementById('notes-table-container');
 const summaryTable = document.getElementById('summary-table-container');
@@ -13,53 +13,54 @@ const archiveTable = document.getElementById('archive-table-container');
 
 export function renderTasksTable() {
   tasksTable.innerHTML = '';
+  const checkActiveTasks = mockupDB.some((item) => !item.archived);
 
-  if (mockupDB.length === 0) {
+  if (!checkActiveTasks) {
     tasksTable.innerHTML = emptyMessage('Add you task');
     return;
   }
 
   mockupDB.forEach((item) => {
-    const elem = createTableRow(item);
-    attachListenersToBtns(elem);
-
-    tasksTable.appendChild(elem);
+    if (!item.archived) {
+      const elem = createTableRow(item);
+      attachListenersToBtns(elem);
+      tasksTable.appendChild(elem);
+    }
   });
 }
 
 export function renderArchiveTable() {
   archiveTable.innerHTML = '';
+  const checkeArchiveTasks = checkerArchiveTasks();
 
-  if (archiveDB.length === 0) {
+  if (!checkeArchiveTasks) {
     archiveTable.innerHTML = emptyMessage('Empty!');
     return;
   }
 
-  archiveDB.forEach((item) => {
-    const elem = createTableRow(item, true);
-    attachListenersToBtns(elem);
-
-    archiveTable.appendChild(elem);
+  mockupDB.forEach((item) => {
+    if (item.archived) {
+      const elem = createTableRow(item, true);
+      attachListenersToBtns(elem);
+      archiveTable.appendChild(elem);
+    }
   });
 }
 
 export function renderSummaryTable() {
   summaryTable.innerHTML = '';
 
-  const activeCategoryCounts = counterCategories(mockupDB);
-  const archivedCategoryCounts = counterCategories(archiveDB);
+  const categoryCounts = counterCategories(mockupDB);
 
   categories.forEach((category) => {
     const newRow = document.createElement('tr');
-
-    const activeCount = activeCategoryCounts[category] || 0;
-    const archivedCount = archivedCategoryCounts[category] || 0;
+    const counts = categoryCounts[category] || { active: 0, archived: 0 };
 
     newRow.innerHTML = `
       <td>${createCategoryIcon(category)}</td>
       <td>${category}</td>
-      <td>${activeCount}</td>
-      <td>${archivedCount}</td>
+      <td>${counts.active}</td>
+      <td>${counts.archived}</td>
       `;
 
     summaryTable.append(newRow);
