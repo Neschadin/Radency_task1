@@ -1,7 +1,5 @@
-import { saveTaskToDB } from './render';
-import { genId } from './utils';
-
-const categories = ['Task', 'Random Thought', 'Idea'];
+import { saveTaskToDB, categories } from './data';
+import { renderTasksTable, renderSummaryTable } from './render';
 
 const modal = document.getElementById('modal');
 
@@ -25,12 +23,12 @@ archiveTableBtn.addEventListener('click', () =>
 );
 addTaskBtn.addEventListener('click', () => showContent(contentAddTaskForm));
 
-export function openModal() {
+function openModal() {
   modal.classList.remove('hidden');
   modal.classList.add('flex');
 }
 
-export function closeModal() {
+function closeModal() {
   modal.classList.add('hidden');
   modal.classList.remove('flex');
 
@@ -48,9 +46,14 @@ function submit(e) {
     category: modalCategory.value,
   };
 
-  saveTaskToDB(newTask);
   closeModal();
+
+  modalTaskId.value = null;
   e.target.reset();
+
+  saveTaskToDB(newTask);
+  renderTasksTable();
+  renderSummaryTable();
 }
 
 export function handlerEditTask(editTask) {

@@ -1,4 +1,4 @@
-import { getTaskById } from './render';
+import { getTaskById } from "./data";
 
 export function extractDatesFromContent(content) {
   const dateRegex = /(\d{1,2}[./-]\d{1,2}[./-]\d{2,4})/g;
@@ -46,8 +46,8 @@ export function formatDate(dateString) {
   return `${month} ${day}, ${year}`;
 }
 
-export function genId() {
+export function generateId() {
   const id = Math.floor(Math.random() * 1000000);
 
-  return getTaskById(id) ? genId() : id;
+  return getTaskById(id) ? generateId() : id;
 }
