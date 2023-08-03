@@ -1,3 +1,5 @@
+import { getTaskById } from './render';
+
 export function extractDatesFromContent(content) {
   const dateRegex = /(\d{1,2}[./-]\d{1,2}[./-]\d{2,4})/g;
   const dates = content.match(dateRegex);
@@ -7,7 +9,7 @@ export function extractDatesFromContent(content) {
   }
 }
 
-export function countCategories(DB) {
+export function counterCategories(DB) {
   return DB.reduce((result, task) => {
     const { category } = task;
 
@@ -16,6 +18,7 @@ export function countCategories(DB) {
     } else {
       result[category]++;
     }
+
     return result;
   }, {});
 }
@@ -44,5 +47,7 @@ export function formatDate(dateString) {
 }
 
 export function genId() {
-  return Math.floor(Math.random() * 1000000);
+  const id = Math.floor(Math.random() * 1000000);
+
+  return getTaskById(id) ? genId() : id;
 }

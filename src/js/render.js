@@ -1,7 +1,7 @@
 import data from '../data.json';
-import { handleEditTask } from './modal';
+import { handlerEditTask } from './modal';
 import {
-  countCategories,
+  counterCategories,
   extractDatesFromContent,
   formatDate,
   genId,
@@ -11,17 +11,36 @@ const tasksTable = document.getElementById('notes-table-container');
 const summaryTable = document.getElementById('summary-table-container');
 const archiveTable = document.getElementById('archive-table-container');
 const categories = ['Task', 'Random Thought', 'Idea'];
-const mockupDB = data.data;
+export const mockupDB = data.data;
 const archiveDB = [];
 
 function createBtn(id, icon) {
   return `
-    <td>
+    <td class="bg-gray-500 bg-opacity-20">
     <button id="${id}">
     <span class="material-symbols-outlined">${icon}</span>
     </button>
     </td>
   `;
+}
+
+function createCategoryIcon(category) {
+  let iconName = '';
+
+  switch (category) {
+    case 'Task':
+      iconName = 'task';
+      break;
+    case 'Idea':
+      iconName = 'emoji_objects';
+      break;
+    case 'Random Thought':
+      iconName = 'psychology';
+    default:
+      break;
+  }
+
+  return `<span class="material-symbols-outlined">${iconName}</span>`;
 }
 
 export function createTableRow(data, isArchive = false) {
@@ -35,7 +54,7 @@ export function createTableRow(data, isArchive = false) {
   const editBtnCell = isArchive ? '' : createBtn('edit_' + id, 'edit');
 
   newRow.innerHTML = `
-    <td></td>
+    <td>${createCategoryIcon(category)}</td>
     <td>${name}</td>
     <td>${formatDate(createdAt)}</td>
     <td>${category}</td>
@@ -50,9 +69,8 @@ export function createTableRow(data, isArchive = false) {
 }
 
 function handleEdit(id) {
-  // const elemToEdit = document.getElementById(id);
   const editTask = getTaskById(id);
-  handleEditTask(editTask);
+  handlerEditTask(editTask);
 }
 
 function handleArchive(id) {
@@ -88,26 +106,47 @@ function handleArchiveDelete(id) {
   renderSummaryTable();
 }
 
-export function addTaskToDB(newTask) {
-  const now = new Date();
-  const formattedDate = now.toISOString().slice(0, 19);
-  const { createdAt } = getTaskById(newTask.id);
-  const checkCreatedAt = newTask.id ? createdAt : formattedDate;
-  const id = newTask.id ? newTask.id : genId();
+function prepareTaskToSave(newTask) {
+  const { id, name, content, category } = newTask;
 
-  const preparedNewTask = {
-    ...newTask,
+  if (id) {
+    const existingTask = getTaskById(id);
+    return { ...existingTask, name, content, category };
+  } else {
+    const now = new Date();
+    const createdAt = now.toISOString().slice(0, 19);
+    const id = genId();
+  }
+
+  return {
     id,
-    createdAt: checkCreatedAt,
+    createdAt,
+    name,
+    content,
+    category,
   };
-
-  mockupDB.push(preparedNewTask);
-  renderTasksTable();
-  renderSummaryTable();
-  console.log(mockupDB);
 }
 
-function getTaskById(id) {
+function updateTaskInDB(id, newTask) {
+  const i = mockupDB.findIndex((task) => task.id === id);
+
+  if (i !== -1) mockupDB[i] = newTask;
+}
+
+export function saveTaskToDB(newTask) {
+  const preparedNewTask = prepareTaskToSave(newTask);
+
+  if (newTask.id) {
+    updateTaskInDB(newTask.id, preparedNewTask);
+  } else {
+    mockupDB.push(preparedNewTask);
+  }
+
+  renderTasksTable();
+  renderSummaryTable();
+}
+
+export function getTaskById(id) {
   return mockupDB.find((task) => task.id === +id);
 }
 
@@ -124,12 +163,8 @@ function moveTaskBetweenDatabases(id, sourceDB, targetDB) {
 
   const task = sourceDB.splice(i, 1)[0];
   targetDB.push(task);
-
-  console.log(mockupDB);
-  console.log(archiveDB);
 }
 
-// done
 function attachListenersToBtns(rowElement) {
   const editBtn = rowElement.querySelector(`button[id^="edit_"]`);
   const archiveBtn = rowElement.querySelector(`button[id^="archive_"]`);
@@ -148,7 +183,6 @@ function attachListenersToBtns(rowElement) {
     archDeleteBtn.addEventListener('click', () => handleArchiveDelete(id));
 }
 
-// Tasks
 export function renderTasksTable() {
   tasksTable.innerHTML = '';
 
@@ -160,13 +194,12 @@ export function renderTasksTable() {
   });
 }
 
-// ARCHIVE
 export function renderArchiveTable() {
   archiveTable.innerHTML = '';
 
   if (archiveDB.length === 0) {
     archiveTable.innerHTML =
-      '<tr><td colspan="8" class="text-xl text-center font-semibold">Empty!</td></tr>';
+      '<tr class="w-full"><td colspan="8" class="text-xl text-center font-semibold">Empty!</td></tr>';
     return;
   }
 
@@ -181,8 +214,8 @@ export function renderArchiveTable() {
 export function renderSummaryTable() {
   summaryTable.innerHTML = '';
 
-  const activeCategoryCounts = countCategories(mockupDB);
-  const archivedCategoryCounts = countCategories(archiveDB);
+  const activeCategoryCounts = counterCategories(mockupDB);
+  const archivedCategoryCounts = counterCategories(archiveDB);
 
   categories.forEach((category) => {
     const newRow = document.createElement('tr');

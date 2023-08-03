@@ -13,22 +13,6 @@
 
   <body class="m-0 min-h-screen min-w-[320px] bg-neutral-700 text-neutral-50">
     <main id="app" class="mx-auto flex max-w-[1366px] flex-col gap-10 p-[2rem]">
-      <!-- <div>
-        <h1>Notes App</h1>
-        <div id="form-container">
-          <form id="note-form">
-            <label for="note-content">Note Content:</label>
-            <input type="text" id="note-content" required />
-            <label for="note-category">Category:</label>
-            <select id="note-category" required>
-              <option value="Task">Task</option>
-              <option value="Random Thought">Random Thought</option>
-              <option value="Idea">Idea</option>
-            </select>
-            <button type="submit">Add Note</button>
-          </form>
-        </div>
-      </div> -->
       <div>
         <table class="w-full">
           <thead>
@@ -37,11 +21,11 @@
               <th class="w-[12%]">Name</th>
               <th class="w-[10%]">Created</th>
               <th class="w-[14%]">Category</th>
-              <th class="w-full">Content</th>
-              <th class="w-fit">Dates</th>
-              <td class="w-[50px]"></td>
-              <td class="w-[50px]"></td>
-              <td class="w-[50px]"></td>
+              <th class="w-1/2">Content</th>
+              <th class="w-[14%]">Dates</th>
+              <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
+              <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
+              <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
             </tr>
           </thead>
 
@@ -82,30 +66,15 @@
       </div>
     </main>
 
-    <!-- <div >
-          <h1>Task Form</h1>
-            <div id="form-container" class="border border-red-500">
-              <form id="note-form">
-                <label for="note-content">Note Content:</label>
-                <input type="text" id="note-content" required />
-                <label for="note-category">Category:</label>
-                <select id="note-category" required>
-                  <option value="Task">Task</option>
-                  <option value="Random Thought">Random Thought</option>
-                  <option value="Idea">Idea</option>
-                </select>
-                <button type="submit">Add Note</button>
-              </form>
-            </div>
-          </div> -->
-
     <div
       id="modal"
-      class="fixed left-0 top-0 hidden h-full w-full items-center justify-center bg-slate-900 bg-opacity-50"
+      class="fixed left-0 top-0 hidden h-full w-full flex-col items-center justify-center bg-slate-900 bg-opacity-50"
     >
-      <div class="relative rounded-md bg-slate-500 px-8 py-16">
+      <div class="relative rounded-md bg-neutral-500 px-8 py-16">
         <div class="close-btn absolute right-5 top-2 text-3xl">
-          <button id="close-modal-btn">&times;</button>
+          <button id="close-modal-btn">
+            <span class="material-symbols-outlined">close</span>
+          </button>
         </div>
 
         <div id="add-task-form" class="hidden">
@@ -150,7 +119,7 @@
           </form>
         </div>
 
-        <div id="archive-table" class="relative hidden w-[1280px]">
+        <div id="archive-table" class="relative hidden w-full min-w-[1280px]">
           <table class="w-full">
             <thead>
               <tr class="bg-gray-400">
@@ -158,10 +127,10 @@
                 <th class="w-[12%]">Name</th>
                 <th class="w-[10%]">Created</th>
                 <th class="w-[14%]">Category</th>
-                <th class="w-full">Content</th>
-                <th class="w-fit">Dates</th>
-                <td class="w-[50px]"></td>
-                <td class="w-[50px]"></td>
+                <th class="w-1/2">Content</th>
+                <th class="w-[14%]">Dates</th>
+                <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
+                <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
               </tr>
             </thead>
 
@@ -171,11 +140,11 @@
       </div>
     </div>
 
-    <script type="module" src="./src/js/data.js"></script>
+    <!-- <script type="module" src="./src/js/data.js"></script>
     <script type="module" src="./src/js/render.js"></script>
     <script type="module" src="./src/js/events.js"></script>
-    <script type="module" src="./src/js/utils.js"></script>
-    <script type="module" src="./src/js/modal.js"></script>
+    <script type="module" src="./src/js/utils.js"></script> -->
+    <!-- <script type="module" src="./src/js/modal.js"></script> -->
     <script type="module" src="./src/js/main.js"></script>
   </body>
 </html>
