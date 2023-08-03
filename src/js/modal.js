@@ -1,47 +1,85 @@
-const addTaskButton = document.getElementById('add-task');
+import { saveTaskToDB, categories } from './data';
+import { renderTasksTable, renderSummaryTable } from './render';
+
 const modal = document.getElementById('modal');
+
+const archiveTableBtn = document.getElementById('show-archive-btn');
+const addTaskBtn = document.getElementById('add-task-btn');
+const closeModalBtn = document.getElementById('close-modal-btn');
+
+const contentArchiveTable = document.getElementById('archive-table');
+const contentAddTaskForm = document.getElementById('add-task-form');
+
+const addTaskForm = document.getElementById('modal-form');
 const modalName = document.getElementById('modal-name');
 const modalCategory = document.getElementById('modal-category');
 const modalContent = document.getElementById('modal-content');
+const modalTaskId = document.getElementById('modal-taskId');
 
-addTaskButton.addEventListener('click', openModalForAdd);
+closeModalBtn.addEventListener('click', closeModal);
+addTaskForm.addEventListener('submit', submit);
+archiveTableBtn.addEventListener('click', () =>
+  showContent(contentArchiveTable)
+);
+addTaskBtn.addEventListener('click', () => showContent(contentAddTaskForm));
 
-export function openModalForAdd() {
+function openModal() {
   modal.classList.remove('hidden');
   modal.classList.add('flex');
-
-//   modalName.value = '';
-//   modalCategory.value = 'Task';
-//   modalContent.value = '';
 }
 
+function closeModal() {
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
 
-export function openModalForEdit(taskId) {
-  const taskData = getTaskById(taskId); // Replace this with your function to get task data by ID
-
-  if (taskData) {
-    modal.classList.remove('hidden');
-    modal.style.display = 'flex';
-
-    modalName.value = taskData.name;
-    modalCategory.value = taskData.category;
-    modalContent.value = taskData.content;
-  }
+  contentArchiveTable.classList.add('hidden');
+  contentAddTaskForm.classList.add('hidden');
 }
 
-const noteForm = document.getElementById('note-form');
-noteForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-});
+function submit(e) {
+  e.preventDefault();
 
+  const newTask = {
+    id: +modalTaskId.value || null,
+    name: modalName.value,
+    content: modalContent.value,
+    category: modalCategory.value,
+  };
 
-// {const notesTable = document
-//   .getElementById('notes-table-container')
-//   .getElementsByTagName('table')[0];
-// notesTable.addEventListener('click', (event) => {
-//   if (event.target && event.target.id.startsWith('edit_')) {
-//     const taskId = event.target.id.replace('edit_', '');
-//     openModalForEdit(taskId);
-//   }
-// });
-// }
+  closeModal();
+
+  modalTaskId.value = null;
+  e.target.reset();
+
+  saveTaskToDB(newTask);
+  renderTasksTable();
+  renderSummaryTable();
+}
+
+export function handlerEditTask(editTask) {
+  const { id, name, category, content } = editTask;
+
+  modalTaskId.value = id;
+  modalName.value = name;
+  modalCategory.value = category;
+  modalContent.value = content;
+
+  contentAddTaskForm.classList.remove('hidden');
+  openModal();
+}
+
+function showContent(content) {
+  content.classList.remove('hidden');
+  openModal();
+}
+
+(function modalCategoryOptions() {
+  const selectElement = document.getElementById('modal-category');
+
+  categories.forEach((category) => {
+    const optionElement = document.createElement('option');
+    optionElement.value = category;
+    optionElement.textContent = category;
+    selectElement.appendChild(optionElement);
+  });
+})();

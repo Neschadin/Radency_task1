@@ -1,179 +1,146 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/output.css" rel="stylesheet" />
     <title>Radency task 1</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
+    />
   </head>
 
-  <body>
-    <main id="app" class="w-full max-w-[1366px] p-[2rem]">
-      <!-- <div>
-        <h1>Notes App</h1>
-        <div id="form-container">
-          <form id="note-form">
-            <label for="note-content">Note Content:</label>
-            <input type="text" id="note-content" required />
-            <label for="note-category">Category:</label>
-            <select id="note-category" required>
-              <option value="Task">Task</option>
-              <option value="Random Thought">Random Thought</option>
-              <option value="Idea">Idea</option>
-            </select>
-            <button type="submit">Add Note</button>
-          </form>
-        </div>
-      </div> -->
+  <body class="m-0 min-h-screen min-w-[320px] bg-neutral-700 text-neutral-50">
+    <main class="mx-auto flex max-w-[1366px] flex-col gap-10 p-[2rem]">
+      <div>
+        <table class="w-full">
+          <thead>
+            <tr class="bg-gray-400">
+              <td class="w-[50px]"></td>
+              <th class="w-[12%]">Name</th>
+              <th class="w-[10%]">Created</th>
+              <th class="w-[14%]">Category</th>
+              <th class="w-1/2">Content</th>
+              <th class="w-[14%]">Dates</th>
+              <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
+              <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
+              <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
+            </tr>
+          </thead>
 
-      <table class="mb-10">
-        <thead>
-          <tr class="bg-gray-400">
-            <th></th>
-            <th>Name</th>
-            <th>Created</th>
-            <th>Category</th>
-            <th>Content</th>
-            <th>Dates</th>
-            <th></th>
-            <th>Archive</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
+          <tbody id="notes-table-container"></tbody>
+        </table>
+      </div>
 
-        <tbody id="notes-table-container">
-          <tr>
-            <td></td>
-            <td>1</td>
-            <td>2023-07-31T08:30:00</td>
-            <td>Task</td>
-            <td>Buy groceries for the week.</td>
-            <td>3/5/2021, 5/5/2021</td>
-            <td>
-              <button class="m-auto"><img src="/edit.svg" alt="edit" /></button>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <button><img src="/archive.svg" alt="archive" /></button>
-              </div>
-            </td>
-            <td>
-              <button class="m-auto">
-                <img src="/delete.svg" alt="delete" />
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="flex justify-evenly">
+        <button
+          id="add-task-btn"
+          class="flex items-center gap-2 rounded-md border-2 border-gray-400 px-4 py-2 transition hover:bg-gray-500"
+        >
+          <span class="material-symbols-outlined"> add_circle </span
+          ><span>ADD TASK</span>
+        </button>
 
-      <button
-        id="add-task"
-        class="mx-auto mb-10 border-2 flex w-fit py-2 px-5 gap-2 items-center border-gray-400"
-      >
-        <img src="/add.svg" alt="add task" />ADD TASK
-      </button>
+        <button
+          id="show-archive-btn"
+          class="flex items-center gap-2 rounded-md border-2 border-gray-400 px-4 py-2 transition hover:bg-gray-500"
+        >
+          <span class="material-symbols-outlined"> inventory_2 </span
+          ><span>ARCHIVE</span>
+        </button>
+      </div>
 
-      <table class="mb-10">
-        <thead>
-          <tr class="bg-gray-400">
-            <th>Name Category</th>
-            <th>Active</th>
-            <th>Archived</th>
-          </tr>
-        </thead>
+      <div>
+        <table class="w-full">
+          <thead>
+            <tr class="bg-gray-400">
+              <td class="w-[50px]"></td>
+              <th>Name Category</th>
+              <th>Active</th>
+              <th>Archived</th>
+            </tr>
+          </thead>
 
-        <tbody id="summary-table-body">
-          <tr>
-            <td>Task</td>
-            <td>2</td>
-            <td>1</td>
-          </tr>
-
-          <tr>
-            <td>Random Thought</td>
-            <td>1</td>
-            <td>1</td>
-          </tr>
-
-          <tr>
-            <td>Idea</td>
-            <td>1</td>
-            <td>0</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="hidden">
-        <h1>Task Form</h1>
-        <div id="form-container" class="border border-red-500">
-          <form id="note-form">
-            <label for="note-content">Note Content:</label>
-            <input type="text" id="note-content" required />
-            <label for="note-category">Category:</label>
-            <select id="note-category" required>
-              <option value="Task">Task</option>
-              <option value="Random Thought">Random Thought</option>
-              <option value="Idea">Idea</option>
-            </select>
-            <button type="submit">Add Note</button>
-          </form>
-        </div>
+          <tbody id="summary-table-container"></tbody>
+        </table>
       </div>
     </main>
 
     <div
       id="modal"
-      class="hidden fixed justify-center items-center left-0 top-0 h-full w-full min-w-[38.4rem] bg-slate-900 bg-opacity-50"
+      class="fixed left-0 top-0 hidden h-full w-full flex-col items-center justify-center bg-slate-900 bg-opacity-50"
     >
-      <div class="modal-content bg-slate-500 relative p-8 rounded-md">
-        <button
-          id="close-btn"
-          class="close-btn absolute right-5 top-2 text-3xl"
-        >
-          &times;
-        </button>
+      <div class="relative rounded-md bg-neutral-500 px-8 py-16">
+        <div class="close-btn absolute right-5 top-2 text-3xl">
+          <button id="close-modal-btn">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
 
-        <h3 class="text-center font-semibold">Add/Edit Task</h3>
+        <div id="add-task-form" class="hidden">
+          <h3 class="text-center font-semibold">Add/Edit Task</h3>
 
-        <form id="modal-form">
-          <div class="flex flex-col w-96 gap-2">
-            <label for="modal-name">Name:</label>
-            <input
-              type="text"
-              id="modal-name"
-              class="p-2 rounded-sm text-slate-800"
-              required
-            />
+          <form id="modal-form">
+            <div class="flex w-96 flex-col gap-2">
+              <label for="modal-name">Name:</label>
+              <input
+                type="text"
+                id="modal-name"
+                name="name"
+                class="rounded-sm p-2 text-slate-800"
+                required
+              />
 
-            <label for="modal-category">Category:</label>
-            <select
-              id="modal-category"
-              class="p-2 rounded-sm text-slate-800"
-              required
-            ></select>
+              <label for="modal-category">Category:</label>
+              <select
+                id="modal-category"
+                name="category"
+                class="rounded-sm p-2 text-slate-800"
+                required
+              ></select>
 
-            <label for="modal-content">Content:</label>
-            <textarea
-              id="modal-content"
-              class="p-2 rounded-sm text-slate-800"
-              required
-            ></textarea>
+              <label for="modal-content">Content:</label>
+              <textarea
+                id="modal-content"
+                name="content"
+                class="rounded-sm p-2 text-slate-800"
+                required
+              ></textarea>
 
-            <button
-              type="submit"
-              class="border rounded-md w-1/2 self-center mt-6 font-semibold"
-            >
-              Save
-            </button>
-          </div>
-        </form>
+              <input type="hidden" id="modal-taskId" name="taskId" />
+
+              <button
+                type="submit"
+                class="mt-6 w-1/2 self-center rounded-md border font-semibold"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="archive-table" class="relative hidden w-full min-w-[1280px]">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-gray-400">
+                <td class="w-[50px]"></td>
+                <th class="w-[12%]">Name</th>
+                <th class="w-[10%]">Created</th>
+                <th class="w-[14%]">Category</th>
+                <th class="w-1/2">Content</th>
+                <th class="w-[14%]">Dates</th>
+                <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
+                <td class="w-[50px] bg-gray-500 bg-opacity-50"></td>
+              </tr>
+            </thead>
+
+            <tbody id="archive-table-container"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <!-- <script type="module" src="./src/js/data.js"></script>
-      <script type="module" src="./src/js/render.js"></script>
-      <script type="module" src="./src/js/events.js"></script>
-      <script type="module" src="./src/js/utils.js"></script> -->
     <script type="module" src="./src/js/main.js"></script>
   </body>
 </html>

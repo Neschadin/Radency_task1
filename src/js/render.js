@@ -1,95 +1,67 @@
-import data from '../data.json';
-import { extractDatesFromContent, formatDate } from './utils';
+import { attachListenersToBtns } from './events';
+import { counterCategories } from './utils';
+import {
+  createTableRow,
+  createCategoryIcon,
+  emptyMessage,
+} from './tableElements';
+import { archiveDB, categories, mockupDB } from './data';
 
-const notesTable = document.getElementById('notes-table-container');
+const tasksTable = document.getElementById('notes-table-container');
 const summaryTable = document.getElementById('summary-table-container');
-const categories = ['Task', 'Random Thought', 'Idea'];
-const mockupData = data.data;
-const archiveData = [];
+const archiveTable = document.getElementById('archive-table-container');
 
-function createButton(id, iconAlt, iconSrc) {
-  return `
-    <div class="flex justify-center">
-    <button id="${id}">
-    <img src="${iconSrc}" alt="${iconAlt}" />
-    </button>
-    </div>
-  `;
-}
+export function renderTasksTable() {
+  tasksTable.innerHTML = '';
 
-export function createNotesTableRow(data) {
-  const { id, name, createdAt, content, category } = data;
-  const newRow = document.createElement('tr');
-  newRow.id = id;
+  if (mockupDB.length === 0) {
+    tasksTable.innerHTML = emptyMessage('Add you task');
+    return;
+  }
 
-  newRow.innerHTML = `
-    <td></td>
-    <td>${name}</td>
-    <td>${formatDate(createdAt)}</td>
-    <td>${content}</td>
-    <td>${category}</td>
-    <td>${extractDatesFromContent(content) || ''}</td>
-    <td>${createButton('edit_' + id, 'edit', '/edit.svg')}</td>
-    <td>${createButton('archive_' + id, 'archive', '/archive.svg')}</td>
-    <td>${createButton('delete_' + id, 'delete', '/delete.svg')}</td>
-  `;
+  mockupDB.forEach((item) => {
+    const elem = createTableRow(item);
+    attachListenersToBtns(elem);
 
-  return newRow;
-}
-
-function handleEdit(id) {
-  const elemToEdit = document.getElementById(id);
-}
-function handleArchive(id) {
-  const elemToArchive = document.getElementById(id);
-  elemToArchive.remove();
-}
-function handleDelete(id) {
-  const elemToDelete = document.getElementById(id);
-  elemToDelete.remove();
-}
-
-function attachHandlersToButtons(rowElement) {
-  const editButton = rowElement.querySelector(`button[id^="edit_"]`);
-  const archiveButton = rowElement.querySelector(`button[id^="archive_"]`);
-  const deleteButton = rowElement.querySelector(`button[id^="delete_"]`);
-
-  const id = rowElement.id;
-
-  editButton.addEventListener('click', () => handleEdit(id));
-  archiveButton.addEventListener('click', () => handleArchive(id));
-  deleteButton.addEventListener('click', () => handleDelete(id));
-}
-
-export function buildTasksList() {
-  // notesTable.innerHTML = '';
-
-  mockupData.forEach((item) => {
-    const elem = createNotesTableRow(item);
-    attachHandlersToButtons(elem);
-    // addListenerToElem(elem);
-
-    notesTable.appendChild(elem);
+    tasksTable.appendChild(elem);
   });
 }
 
-function renderNotesTable() {}
+export function renderArchiveTable() {
+  archiveTable.innerHTML = '';
 
-function renderSummaryTable() {
-  // summaryTable.innerHTML = '';
-  let summaryTableHTML = '';
-
-  for (const category of categories) {
-    const activeCount = countNotesByCategory(notesData, category, false);
-    const archivedCount = countNotesByCategory(notesData, category, true);
-
-    summaryTableHTML += `<tr>`;
-    summaryTableHTML += `<td>${category}</td>`;
-    summaryTableHTML += `<td>${activeCount}</td>`;
-    summaryTableHTML += `<td>${archivedCount}</td>`;
-    summaryTableHTML += `</tr>`;
+  if (archiveDB.length === 0) {
+    archiveTable.innerHTML = emptyMessage('Empty!');
+    return;
   }
 
-  summaryTableHTML += '</table>';
-  summaryTableContainer.innerHTML = summaryTableHTML;
+  archiveDB.forEach((item) => {
+    const elem = createTableRow(item, true);
+    attachListenersToBtns(elem);
+
+    archiveTable.appendChild(elem);
+  });
+}
+
+export function renderSummaryTable() {
+  summaryTable.innerHTML = '';
+
+  const activeCategoryCounts = counterCategories(mockupDB);
+  const archivedCategoryCounts = counterCategories(archiveDB);
+
+  categories.forEach((category) => {
+    const newRow = document.createElement('tr');
+
+    const activeCount = activeCategoryCounts[category] || 0;
+    const archivedCount = archivedCategoryCounts[category] || 0;
+
+    newRow.innerHTML = `
+      <td>${createCategoryIcon(category)}</td>
+      <td>${category}</td>
+      <td>${activeCount}</td>
+      <td>${archivedCount}</td>
+      `;
+
+    summaryTable.append(newRow);
+  });
 }

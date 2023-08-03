@@ -5,42 +5,21 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
-  color: #eeeeee;
-  background-color: #555555;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-/* button {
-  @apply h-6 w-6;
-} */
-
-table {
-  /* border-collapse:separate; */
-  @apply w-full;
+:root::-webkit-scrollbar {
+  display: none;
 }
 
 th,
 td {
-  @apply p-3;
-  border: 1px solid gray;
+  @apply border-b border-gray-400 p-3 text-left;
 }
-
-/* @layer utilities {
-  .flex-center {
-    @apply flex justify-center items-center;
-  }
-} */

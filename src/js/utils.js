@@ -1,3 +1,5 @@
+import { getTaskById } from "./data";
+
 export function extractDatesFromContent(content) {
   const dateRegex = /(\d{1,2}[./-]\d{1,2}[./-]\d{2,4})/g;
   const dates = content.match(dateRegex);
@@ -7,7 +9,18 @@ export function extractDatesFromContent(content) {
   }
 }
 
-export function countNotesByCategory(notes, category, archived) {
+export function counterCategories(DB) {
+  return DB.reduce((result, task) => {
+    const { category } = task;
+
+    if (!result[category]) {
+      result[category] = 1;
+    } else {
+      result[category]++;
+    }
+
+    return result;
+  }, {});
 }
 
 export function formatDate(dateString) {
@@ -31,4 +44,10 @@ export function formatDate(dateString) {
   const year = date.getFullYear();
 
   return `${month} ${day}, ${year}`;
+}
+
+export function generateId() {
+  const id = Math.floor(Math.random() * 1000000);
+
+  return getTaskById(id) ? generateId() : id;
 }
